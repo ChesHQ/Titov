@@ -1,11 +1,28 @@
-n = int(input("Введите числа"))
-read = [float(input()) for _ in range(n)]
+# Считываем количество показаний
+n = int(input("Введите количество показаний (N): "))
 
-read.sort()#Сортировка показаний для хронологии
+# Считываем сами показания (можно через пробел в одной строке)
+readings = list(map(float, input(f"Введите {n} показаний счётчика через пробел: ").split()))
 
-cons = [read[i] - read[i] for i in range( , n)]
-total_cons = sum(cons) #разница между соседними показаниями и суммы всех расходов
+if len(readings) != n:
+    print("Ошибка: введено неверное количество чисел.")
+else:
+    # Сортируем показания — так восстанавливаем хронологию (счётчик только растёт)
+    readings.sort()
 
-aver_month = total_cons #среднее потребление за месяц
+    if n < 2:
+        print("Недостаточно данных: нужно минимум 2 показания, чтобы посчитать расход.")
+    else:
+        # Считаем месячные расходы как разности соседних показаний
+        total_consumption = readings[-1] - readings[0]          # общий расход
+        months = n - 1                                           # количество месяцев (интервалов)
+        average_consumption = total_consumption / months        # средний расход
 
-print(f"среднее потребление газа за месяц: {average_month:.2f} куб.м")
+        # Если хочется видеть ещё и отдельные месячные расходы:
+        monthly_consumptions = [readings[i] - readings[i-1] for i in range(1, n)]
+
+        print("\nОтсортированные показания:", readings)
+        print("Месячные расходы (м³):", monthly_consumptions)
+        print(f"Средний месячный расход газа: {average_consumption:.3f} м³")
+
+
